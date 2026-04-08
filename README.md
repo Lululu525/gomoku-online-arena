@@ -334,6 +334,7 @@ Undo is allowed only when:
 
 ## 🏗️ Project Structure
 gomoku-project/
+```bash
 ├─ server/ # C++ backend (HTTP server + game logic)
 │ ├─ main.cpp
 │ ├─ HttpServer.*
@@ -346,6 +347,7 @@ gomoku-project/
 ├─ style.css
 ├─ app.js
 └─ assets/
+```
 
 ## ⚙️ How to Run (Windows + g++)
 
