@@ -1,8 +1,8 @@
-![Game](./assets/lobby.png)
+![Game](./pic/lobby.png)
 
-![Game](./assets/game.png)
+![Game](./pic/game.png)
 
-![Game](./assets/result.png)
+![Game](./pic/result.png)
 
 # 🎮 Gomoku Arena V11
 
