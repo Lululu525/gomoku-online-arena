@@ -1,6 +1,6 @@
 ![Game](./pic/lobby.png)
 
-![Game](./pic/game.png)
+![Game](./pic/gameroom.png)
 
 ![Game](./pic/result.png)
 
