@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gomoku Arena V10</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="lobby-body">
+  <div class="lobby-page">
+    <header class="lobby-topbar">
+      <button id="showLobbyRulesBtn" class="top-icon-btn" type="button">規則</button>
+      <div class="brand-wrap">
+        <div class="brand-pill">C++ Browser Project</div>
+        <h1>Gomoku Arena</h1>
+      </div>
+      <button id="showSettingsBtn" class="top-icon-btn" type="button">設定</button>
+    </header>
+
+    <main class="lobby-main-card">
+      <div class="profile-avatar-wrap">
+        <button id="profileAvatarButton" class="profile-avatar-button" type="button" aria-label="選擇大頭貼">
+          <span class="profile-avatar-circle">
+            <img id="profileAvatarPreview" src="/assets/avatars/dog.png" alt="avatar preview" />
+          </span>
+          <span class="avatar-edit-fab">✎</span>
+        </button>
+      </div>
+
+      <section class="profile-card">
+        <div class="form-group">
+          <label for="playerName">暱稱</label>
+          <input id="playerName" type="text" placeholder="輸入名稱" maxlength="20" />
+        </div>
+
+        <div class="form-grid-two">
+          <div class="form-group">
+            <label>啟用回合計時</label>
+            <div class="toggle-panel">
+              <span>每手倒數限制</span>
+              <label class="switch">
+                <input id="timerToggle" type="checkbox" />
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+
+          <div class="form-group" id="timerOptionsBlock">
+            <label for="turnSeconds">每手最多秒數</label>
+            <select id="turnSeconds">
+              <option value="10">10 秒</option>
+              <option value="15" selected>15 秒</option>
+              <option value="20">20 秒</option>
+              <option value="30">30 秒</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>啟用悔棋功能</label>
+          <div class="toggle-panel">
+            <span>按照規則開啟悔棋請求</span>
+            <label class="switch">
+              <input id="undoToggle" type="checkbox" checked />
+              <span class="slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <p class="hint center-hint">建立房間會立即進入新房間；若要加入既有房間，按下「加入房間」後再輸入 6 位房號。也可以直接選擇「與電腦對戰」。</p>
+      </section>
+
+      <section class="lobby-actions">
+        <button id="createBtn" class="cta-btn play-btn" type="button">建立房間</button>
+        <button id="joinBtn" class="cta-btn join-btn" type="button">加入房間</button>
+        <button id="aiBtn" class="cta-btn ai-btn" type="button">與電腦對戰</button>
+      </section>
+    </main>
+  </div>
+
+  <div id="avatarOverlay" class="modal-overlay hidden">
+    <div class="avatar-modal-card">
+      <button id="avatarModalCloseBtn" class="modal-close" type="button">×</button>
+      <h3>選擇大頭貼</h3>
+      <p class="hint">預設為狗，也可以改成其他可愛動物。</p>
+      <div id="avatarModalGrid" class="avatar-grid avatar-grid-modal"></div>
+    </div>
+  </div>
+
+  <div id="lobbyRulesOverlay" class="modal-overlay hidden">
+    <div class="rules-modal-card">
+      <div class="rules-ribbon">遊戲規則</div>
+      <div class="rules-content">
+        <p>1. 棋盤為 15 × 15，由黑棋先下。</p>
+        <p>2. 黑白雙方輪流落子，不能下在已有棋子的地方。</p>
+        <p>3. 若有開啟悔棋，只有剛下出最新一步的玩家才可提出。</p>
+        <p>4. 若有開啟計時，超時後該手會被跳過，並換下一位玩家。</p>
+        <p>5. 若對手離開房間，系統會通知你並自動等待新的玩家加入。</p>
+      </div>
+      <button id="closeLobbyRulesBtn" class="cta-btn play-btn small-cta" type="button">確認</button>
+    </div>
+  </div>
+
+  
+
+  
+  <div id="settingsOverlay" class="modal-overlay hidden">
+    <div class="modal-card settings-modal-card">
+      <button id="settingsModalCloseBtn" class="modal-close" type="button">×</button>
+      <h3>聲音設定</h3>
+
+      <div class="settings-group">
+        <div class="settings-row">
+          <span>背景音樂</span>
+          <label class="switch sound-switch" for="bgmToggle">
+            <input id="bgmToggle" type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <label for="bgmVolume" class="settings-slider-label">背景音樂音量</label>
+        <input id="bgmVolume" class="range-slider" type="range" min="0" max="100" value="45" />
+        <div id="bgmVolumeValue" class="volume-value">45%</div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-row">
+          <span>按鍵音效</span>
+          <label class="switch sound-switch" for="sfxToggle">
+            <input id="sfxToggle" type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <label for="sfxVolume" class="settings-slider-label">按鍵音效音量</label>
+        <input id="sfxVolume" class="range-slider" type="range" min="0" max="100" value="82" />
+        <div id="sfxVolumeValue" class="volume-value">82%</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="closeSettingsBtn" class="primary-btn" type="button">完成</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="joinRoomOverlay" class="modal-overlay hidden">
+    <div class="join-modal-card">
+      <button id="joinModalCloseBtn" class="modal-close" type="button">×</button>
+      <div class="rules-ribbon small-ribbon">加入房間</div>
+      <div class="join-modal-body">
+        <div class="form-group">
+          <label for="joinRoomId">房號</label>
+          <input id="joinRoomId" type="text" placeholder="輸入 6 位房號" maxlength="6" />
+        </div>
+        <p class="hint">若你是從邀請連結進入，系統會自動帶入房號。</p>
+        <button id="confirmJoinBtn" class="cta-btn join-btn small-cta" type="button">確認加入</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
