@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gomoku Arena Room</title>
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body class="room-body">
+  <div class="room-shell">
+    <section class="board-section panel">
+      <div class="room-header-row">
+        <div>
+          <h1>對戰棋盤</h1>
+          <p id="roomIdText">房號：</p>
+          <p id="roomModeText" class="room-mode-text">模式：線上雙人</p>
+        </div>
+        <div class="header-actions">
+          <button id="copyRoomBtn" class="ghost-btn">複製房號</button>
+          <button id="copyInviteBtn" class="ghost-btn">複製邀請連結</button>
+          <button id="showRoomSettingsBtn" class="ghost-btn">設定</button>
+          <button id="leaveBtn" class="danger-btn">返回大廳</button>
+        </div>
+      </div>
+
+      <div class="status-banner" id="statusBanner">等待資料中...</div>
+
+      <div class="board-stage">
+        <canvas id="boardCanvas" width="720" height="720"></canvas>
+      </div>
+
+      <div class="board-actions">
+        <button id="restartBtn" class="primary-btn">要求重新開始</button>
+        <button id="undoBtn" class="secondary-btn">要求悔棋</button>
+        <button id="replayBtn" class="ghost-btn">回放</button>
+      </div>
+    </section>
+
+    <aside class="sidebar">
+      <div class="info-card result-card">
+        <h3>玩家資訊</h3>
+        <div class="result-player-row">
+          <div class="result-player-box">
+            <div class="avatar-circle small"><img id="blackAvatarImg" src="" alt="black avatar" /></div>
+            <div>
+              <div class="label-text">黑棋</div>
+              <div id="blackPlayerName">等待玩家</div>
+            </div>
+          </div>
+          <div class="result-player-box">
+            <div class="avatar-circle small"><img id="whiteAvatarImg" src="" alt="white avatar" /></div>
+            <div>
+              <div class="label-text">白棋</div>
+              <div id="whitePlayerName">等待玩家</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>回合資訊</h3>
+        <p id="turnText">輪到：-</p>
+        <p id="roleText">你的身份：-</p>
+      </div>
+
+      <div class="info-card">
+        <h3>計時 / 轉場</h3>
+        <p id="timerText">-</p>
+        <div class="progress-track">
+          <div id="timerBar" class="progress-bar"></div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <h3>落子紀錄</h3>
+        <div id="moveHistory" class="history-box"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div id="modalOverlay" class="modal-overlay hidden">
+    <div class="modal-card">
+      <button id="modalCloseBtn" class="modal-close">×</button>
+      <h3 id="modalTitle">通知</h3>
+      <p id="modalMessage"></p>
+      <div id="modalActions" class="modal-actions"></div>
+    </div>
+  </div>
+
+  <div id="rulesOverlay" class="modal-overlay hidden">
+    <div class="rules-modal-card room-rules">
+      <div class="rules-ribbon">進房提醒</div>
+      <div class="rules-content">
+        <p>1. 黑棋先下，白棋後下。</p>
+        <p>2. 不能下在已有棋子的地方。</p>
+        <p>3. 若有開啟悔棋，只有剛下出最新一步的玩家才可提出。</p>
+        <p>4. 若有開啟計時，超時會直接跳到下一手。</p>
+        <p>5. 若對手離開房間，系統會通知你並自動等待新的玩家加入。</p>
+      </div>
+      <button id="closeRulesBtn" class="cta-btn play-btn small-cta" type="button">確認</button>
+    </div>
+  </div>
+
+  <div id="resultOverlay" class="modal-overlay hidden">
+    <div class="result-modal">
+      <div class="result-top">
+        <div class="result-portrait winner">
+          <div class="crown">👑</div>
+          <div class="avatar-circle"><img id="resultWinnerAvatar" src="" alt="winner avatar" /></div>
+          <div id="resultWinnerName" class="result-name">Name</div>
+        </div>
+        <div class="result-message-wrap">
+          <div id="resultMainText" class="result-main-text">You Win!</div>
+        </div>
+        <div class="result-portrait loser">
+          <div class="avatar-circle"><img id="resultLoserAvatar" src="" alt="loser avatar" /></div>
+          <div id="resultLoserName" class="result-name">Name</div>
+        </div>
+      </div>
+      <div class="result-actions">
+        <button id="resultCloseBtn" class="ghost-btn">關閉</button>
+      </div>
+    </div>
+  </div>
+
+
+  
+  <div id="settingsOverlay" class="modal-overlay hidden">
+    <div class="modal-card settings-modal-card">
+      <button id="settingsModalCloseBtn" class="modal-close" type="button">×</button>
+      <h3>聲音設定</h3>
+
+      <div class="settings-group">
+        <div class="settings-row">
+          <span>背景音樂</span>
+          <label class="switch sound-switch" for="bgmToggle">
+            <input id="bgmToggle" type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <label for="bgmVolume" class="settings-slider-label">背景音樂音量</label>
+        <input id="bgmVolume" class="range-slider" type="range" min="0" max="100" value="45" />
+        <div id="bgmVolumeValue" class="volume-value">45%</div>
+      </div>
+
+      <div class="settings-group">
+        <div class="settings-row">
+          <span>按鍵音效</span>
+          <label class="switch sound-switch" for="sfxToggle">
+            <input id="sfxToggle" type="checkbox" checked />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <label for="sfxVolume" class="settings-slider-label">按鍵音效音量</label>
+        <input id="sfxVolume" class="range-slider" type="range" min="0" max="100" value="82" />
+        <div id="sfxVolumeValue" class="volume-value">82%</div>
+      </div>
+
+      <div class="modal-actions">
+        <button id="closeSettingsBtn" class="primary-btn" type="button">完成</button>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
