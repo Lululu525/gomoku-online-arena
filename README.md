@@ -168,12 +168,7 @@ Undo is allowed only when:
 
 ---
 
-## 🏗️ Project Structure
-![Game](./assets/lobby.png)
 
-![Game](./assets/game.png)
-
-![Game](./assets/result.png)
 
 # 🎮 Gomoku Arena V11
 
