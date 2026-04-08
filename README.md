@@ -4,6 +4,8 @@
 
 ![Game](./pic/result.png)
 
+![Game](./pic/result2.png)
+
 # 🎮 Gomoku Arena V11
 
 A browser-based online Gomoku game powered by a C++ backend server, enhanced with AI gameplay, advanced audio system, and modern UI/UX design.
