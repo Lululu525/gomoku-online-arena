@@ -112,7 +112,7 @@ function getNoiseBuffer() {
 
 function getBackgroundAudio() {
   if (!backgroundAudio) {
-    backgroundAudio = new Audio('/assets/audio/Gomokugame.mp3');
+    backgroundAudio = new Audio('./assets/audio/Gomokugame.mp3');
     backgroundAudio.loop = true;
     backgroundAudio.preload = 'auto';
   }
@@ -379,7 +379,7 @@ function attachHoverSound(element) {
 }
 
 function avatarPath(avatarId) {
-  return `/assets/avatars/${avatarId || DEFAULT_AVATAR_ID}.png`;
+  return `./assets/avatars/${avatarId || DEFAULT_AVATAR_ID}.png`;
 }
 
 function showToast(message) {
@@ -551,7 +551,7 @@ async function confirmJoinRoom() {
 
     setStoredToken(data.roomId, data.playerToken);
     closeJoinRoomModal();
-    window.location.href = `/room.html?roomId=${encodeURIComponent(data.roomId)}`;
+    window.location.href = `./room.html?roomId=${encodeURIComponent(data.roomId)}`;
   } catch (error) {
     showToast(error.message);
   }
@@ -665,7 +665,7 @@ function initLobbyPage() {
       playerName: encodeURIComponent(safePlayerName)
     });
 
-    window.location.href = `/room.html?${params.toString()}`;
+    window.location.href = `./room.html?${params.toString()}`;
   });
 
   qs('createBtn').addEventListener('click', async () => {
@@ -682,7 +682,7 @@ function initLobbyPage() {
       });
 
       setStoredToken(data.roomId, data.playerToken);
-      window.location.href = `/room.html?roomId=${encodeURIComponent(data.roomId)}`;
+      window.location.href = `./room.html?roomId=${encodeURIComponent(data.roomId)}`;
     } catch (error) {
       showToast(error.message);
     }
@@ -1238,7 +1238,7 @@ function initAiRoomPage() {
     applySoundSettingsToUI();
   });
 
-  qs('sfxToggle')?.addEventListener('change', () => {
+  qs('sfxToggle')?.addEventListener('change', () => {https://lululu525.github.io/gomoku-online-arena/
     sfxEnabled = qs('sfxToggle').checked;
     persistSoundSettings();
     applySoundSettingsToUI();
@@ -1871,7 +1871,7 @@ async function leaveRoom() {
     clearStoredToken(params.roomId);
   }
 
-  window.location.href = '/index.html';
+  window.location.href = './index.html';
 }
 
 function startReplay() {
@@ -1954,7 +1954,7 @@ function initRoomPage() {
   attachGlobalAudioHandlers();
 
   if (!params.roomId) {
-    window.location.href = '/index.html';
+    window.location.href = './index.html';
     return;
   }
 
